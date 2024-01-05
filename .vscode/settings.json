@@ -1,0 +1,12 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "cSpell.words": ["Kazuki", "Nuxt", "Tahara"],
+  "vue.server.petiteVue.supportHtmlFile": true
+}
