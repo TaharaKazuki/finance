@@ -2,9 +2,9 @@ export const useCurrency = (amount: number | Ref<number>) => {
   const currency = computed(() => {
     const value = isRef(amount) ? amount.value : amount
 
-    return new Intl.NumberFormat('en-IN', {
+    return new Intl.NumberFormat('ja-JP', {
       style: 'currency',
-      currency: 'EUR',
+      currency: 'JPY',
     }).format(value)
   })
 
