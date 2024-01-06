@@ -1,10 +1,11 @@
+import { type } from '../.nuxt/types/imports';
 <template>
   <div
     class="grid grid-cols-2 py-4 border-b border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-100"
   >
     <div class="flex items-center justify-between">
       <div class="flex items-center space-x-1">
-        <UIcon name="i-heroicons-arrow-up-right" class="text-green-600" />
+        <UIcon :name="icon" :class="[iconColor]" />
         <div>{{ transaction.description }}</div>
       </div>
 
@@ -30,9 +31,18 @@
   </div>
 </template>
 <script setup lang="ts">
+import type { Transaction } from '../types/transaction'
 const props = defineProps<{ transaction: Transaction }>()
 
 const { currency } = useCurrency(props.transaction!.amount!)
+
+const isIncome = computed(() => props.transaction!.type! === 'Income')
+const icon = computed(() =>
+  isIncome.value ? 'i-heroicons-arrow-up-right' : 'i-heroicons-arrow-down-left'
+)
+const iconColor = computed(() =>
+  isIncome.value ? 'text-green-600' : 'text-red-600'
+)
 
 const items = [
   [
