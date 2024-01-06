@@ -37,6 +37,12 @@
       :loading="false"
     />
   </section>
+  <section>
+    <Transaction />
+    <Transaction />
+    <Transaction />
+    <Transaction />
+  </section>
 </template>
 <script setup lang="ts">
 const transactionViewOptions = ['Yearly', 'Monthly', 'Daily']
