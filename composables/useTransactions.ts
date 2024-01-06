@@ -13,10 +13,9 @@ export const useTransactions = async () => {
     'transactions',
     fetchTransactions
   )
+
   return {
     transactions,
     pending,
   }
 }
-
-export type Transaction = Database['public']['Tables']['transactions']['Row']
