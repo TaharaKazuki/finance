@@ -1,4 +1,3 @@
-import { type } from '../.nuxt/types/imports';
 <template>
   <div
     class="grid grid-cols-2 py-4 border-b border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-100"
@@ -24,6 +23,7 @@ import { type } from '../.nuxt/types/imports';
             color="white"
             variant="ghost"
             trailing-icon="i-heroicons-ellipsis-horizontal"
+            :loading="isLoading"
           />
         </UDropdown>
       </div>
@@ -33,6 +33,7 @@ import { type } from '../.nuxt/types/imports';
 <script setup lang="ts">
 import type { Transaction } from '../types/transaction'
 const props = defineProps<{ transaction: Transaction }>()
+const isLoading = ref(false)
 
 const { currency } = useCurrency(props.transaction!.amount!)
 
@@ -56,7 +57,11 @@ const items = [
     {
       label: 'Delete',
       icon: 'i-heroicons-trash-20-solid',
-      click: () => deleteTransition(props.transaction.id),
+      click: async () => {
+        isLoading.value = true
+        await deleteTransition(props.transaction.id)
+        isLoading.value = false
+      },
     },
   ],
 ]

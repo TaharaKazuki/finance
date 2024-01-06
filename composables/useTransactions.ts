@@ -3,17 +3,14 @@ import type { Database } from '~/types/supabase'
 export const useTransactions = () => {
   const fetchTransactions = async () => {
     const { data: transactions, pending } = await useAsyncData(
-      'transactions',
+      'transactions_get',
       getData
     )
     return { transactions, pending }
   }
 
-  const deleteTransition = (id: number) => {
-    const { pending: isLoading } = useAsyncData('transactions', () =>
-      deleteData(id)
-    )
-    return { isLoading }
+  const deleteTransition = async (id: number) => {
+    await useAsyncData('transactions_delete', () => deleteData(id))
   }
 
   return { fetchTransactions, deleteTransition }
@@ -29,6 +26,7 @@ const getData = async () => {
 const deleteData = async (id: number) => {
   const supabase = useSupabaseClient<Database>()
   const toast = useToast()
+
   try {
     await supabase.from('transactions').delete().eq('id', id)
     toast.add({
