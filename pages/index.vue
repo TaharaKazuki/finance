@@ -46,8 +46,24 @@
   </section>
 </template>
 <script setup lang="ts">
+import type { Transaction } from '~/types/transaction'
+
 const transactionViewOptions = ['Yearly', 'Monthly', 'Daily']
 
 const selectedView = ref(transactionViewOptions[1])
 const { transactions, pending } = await useTransactions()
+
+const transactionsGroupedByDate = computed(() => {
+  const grouped: Record<string, Transaction[]> = {}
+
+  for (const transaction of transactions.value!) {
+    const date = new Date(transaction.created_at).toISOString().split('T')[0]
+    if (!grouped[date]) {
+      grouped[date] = []
+    }
+    grouped[date].push(transaction)
+  }
+  return grouped
+})
+console.info(transactionsGroupedByDate.value)
 </script>
