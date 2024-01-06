@@ -13,28 +13,28 @@
       title="Income"
       :amount="4000"
       :last-amount="3000"
-      :loading="false"
+      :loading="pending"
     />
     <Trend
       color="red"
       title="Expense"
       :amount="4000"
       :last-amount="5000"
-      :loading="false"
+      :loading="pending"
     />
     <Trend
       color="green"
       title="Investments"
       :amount="4000"
       :last-amount="3000"
-      :loading="false"
+      :loading="pending"
     />
     <Trend
       color="red"
       title="Saving"
       :amount="4000"
       :last-amount="4100"
-      :loading="false"
+      :loading="pending"
     />
   </section>
   <section>
@@ -48,6 +48,7 @@
         v-for="transaction in transactionsOnDay"
         :key="transaction.id"
         :transaction="transaction"
+        @deleted="refreshTransactions()"
       />
     </div>
   </section>
@@ -58,7 +59,14 @@ import type { Transaction } from '~/types/transaction'
 const transactionViewOptions = ['Yearly', 'Monthly', 'Daily']
 
 const selectedView = ref(transactionViewOptions[1])
-const { transactions } = await useTransactions().fetchTransactions()
+
+const { fetchTransactions } = useTransactions()
+const { transactions, pending } = await fetchTransactions()
+
+const refreshTransactions = async () => {
+  const result = await fetchTransactions()
+  transactions.value = result.transactions.value
+}
 
 const transactionsGroupedByDate = computed(() => {
   const grouped: Record<string, Transaction[]> = {}

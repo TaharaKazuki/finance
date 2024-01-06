@@ -34,6 +34,7 @@
 import type { Transaction } from '../types/transaction'
 const props = defineProps<{ transaction: Transaction }>()
 const isLoading = ref(false)
+const emit = defineEmits(['deleted'])
 
 const { currency } = useCurrency(props.transaction!.amount!)
 
@@ -60,6 +61,7 @@ const items = [
       click: async () => {
         isLoading.value = true
         const { pending } = await deleteTransition(props.transaction.id)
+        emit('deleted')
         isLoading.value = pending.value
       },
     },
