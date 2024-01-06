@@ -11,11 +11,34 @@ export const useTransactions = () => {
     return { transactions, pending }
   }
 
-  return { fetchTransactions }
+  const deleteTransition = (id: number) => {
+    const { pending: isLoading } = useAsyncData('transactions', () =>
+      deleteData(id)
+    )
+    return { isLoading }
+  }
+
+  return { fetchTransactions, deleteTransition }
 }
 
 const getData = async () => {
   const { data, error } = await supabase.from('transactions').select()
   if (error) return []
   return data
+}
+
+const deleteData = async (id: number) => {
+  const toast = useToast()
+  try {
+    await supabase.from('transactions').delete().eq('id', id)
+    toast.add({
+      title: 'Transaction deleted',
+      icon: 'i-heroicons-check-circle',
+    })
+  } catch (error) {
+    toast.add({
+      title: 'Transaction deleted',
+      icon: 'i-heroicons-exclamation-circle',
+    })
+  }
 }

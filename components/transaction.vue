@@ -44,6 +44,8 @@ const iconColor = computed(() =>
   isIncome.value ? 'text-green-600' : 'text-red-600'
 )
 
+const { deleteTransition } = useTransactions()
+
 const items = [
   [
     {
@@ -54,7 +56,7 @@ const items = [
     {
       label: 'Delete',
       icon: 'i-heroicons-trash-20-solid',
-      click: () => console.log('Delete'),
+      click: () => deleteTransition(props.transaction.id),
     },
   ],
 ]
