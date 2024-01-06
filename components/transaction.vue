@@ -59,8 +59,8 @@ const items = [
       icon: 'i-heroicons-trash-20-solid',
       click: async () => {
         isLoading.value = true
-        await deleteTransition(props.transaction.id)
-        isLoading.value = false
+        const { pending } = await deleteTransition(props.transaction.id)
+        isLoading.value = pending.value
       },
     },
   ],

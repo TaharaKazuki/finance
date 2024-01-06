@@ -10,7 +10,7 @@ export const useTransactions = () => {
   }
 
   const deleteTransition = async (id: number) => {
-    await useAsyncData('transactions_delete', () => deleteData(id))
+    return await useAsyncData('transactions_delete', () => deleteData(id))
   }
 
   return { fetchTransactions, deleteTransition }
