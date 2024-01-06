@@ -65,5 +65,4 @@ const transactionsGroupedByDate = computed(() => {
   }
   return grouped
 })
-console.info(transactionsGroupedByDate.value)
 </script>
