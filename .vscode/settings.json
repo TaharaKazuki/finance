@@ -7,6 +7,6 @@
   "editor.quickSuggestions": {
     "strings": true
   },
-  "cSpell.words": ["Kazuki", "Nuxt", "Tahara"],
+  "cSpell.words": ["Kazuki", "Nuxt", "supabase", "Tahara"],
   "vue.server.petiteVue.supportHtmlFile": true
 }
