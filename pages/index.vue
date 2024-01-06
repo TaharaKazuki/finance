@@ -38,29 +38,16 @@
     />
   </section>
   <section>
-    <Transaction />
-    <Transaction />
-    <Transaction />
-    <Transaction />
+    <Transaction
+      v-for="transaction in transactions"
+      :key="transaction.id"
+      :transaction="transaction"
+    />
   </section>
 </template>
 <script setup lang="ts">
-import type { Database } from '~/types/supabase'
 const transactionViewOptions = ['Yearly', 'Monthly', 'Daily']
 
 const selectedView = ref(transactionViewOptions[1])
-
-const transactions = ref<
-  Database['public']['Tables']['transactions']['Row'][] | null
->([])
-
-const { supabase } = useSupabase()
-
-const { data, pending } = await useAsyncData('transactions', async () => {
-  const { data, error } = await supabase.from('transactions').select()
-  if (error) return []
-  return data
-})
-
-transactions.value = data.value
+const { transactions, pending } = await useTransactions()
 </script>
