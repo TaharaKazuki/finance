@@ -1,10 +1,8 @@
 import type { Database } from '~/types/supabase'
 
-const supabase = useSupabaseClient<Database>()
-
 export const useTransactions = () => {
-  const fetchTransactions = () => {
-    const { data: transactions, pending } = useAsyncData(
+  const fetchTransactions = async () => {
+    const { data: transactions, pending } = await useAsyncData(
       'transactions',
       getData
     )
@@ -22,12 +20,14 @@ export const useTransactions = () => {
 }
 
 const getData = async () => {
+  const supabase = useSupabaseClient<Database>()
   const { data, error } = await supabase.from('transactions').select()
   if (error) return []
   return data
 }
 
 const deleteData = async (id: number) => {
+  const supabase = useSupabaseClient<Database>()
   const toast = useToast()
   try {
     await supabase.from('transactions').delete().eq('id', id)

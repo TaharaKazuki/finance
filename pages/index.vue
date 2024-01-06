@@ -58,8 +58,7 @@ import type { Transaction } from '~/types/transaction'
 const transactionViewOptions = ['Yearly', 'Monthly', 'Daily']
 
 const selectedView = ref(transactionViewOptions[1])
-const { fetchTransactions } = useTransactions()
-const { transactions, pending } = fetchTransactions()
+const { transactions } = await useTransactions().fetchTransactions()
 
 const transactionsGroupedByDate = computed(() => {
   const grouped: Record<string, Transaction[]> = {}
