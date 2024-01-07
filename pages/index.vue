@@ -37,7 +37,7 @@
       :loading="pending"
     />
   </section>
-  <section v-if="pending">
+  <section v-if="!pending">
     <div
       v-for="(transactionsOnDay, date) in transactionsGroupedByDate"
       :key="date"
