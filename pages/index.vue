@@ -46,11 +46,18 @@
       </div>
     </div>
     <div>
+      <UModal v-model="isOpen">
+        <UCard>
+          <template #header> Add Transaction </template>
+          <div>Hello!</div>
+        </UCard>
+      </UModal>
       <UButton
         icon="i-heroicons-plus-circle"
         color="white"
         variant="solid"
         label="Add"
+        @click="isOpen = true"
       />
     </div>
   </section>
@@ -80,6 +87,7 @@ import type { Transaction } from '~/types/transaction'
 const transactionViewOptions = ['Yearly', 'Monthly', 'Daily']
 
 const selectedView = ref(transactionViewOptions[1])
+const isOpen = ref(false)
 
 const { fetchTransactions } = useTransactions()
 const { transactions, pending } = await fetchTransactions()
