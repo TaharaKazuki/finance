@@ -37,7 +37,7 @@
       :loading="pending"
     />
   </section>
-  <section>
+  <section v-if="pending">
     <div
       v-for="(transactionsOnDay, date) in transactionsGroupedByDate"
       :key="date"
@@ -51,6 +51,9 @@
         @deleted="refreshTransactions()"
       />
     </div>
+  </section>
+  <section v-else>
+    <USkeleton class="h-8 w-full mb-2" v-for="i in 4" :key="i" />
   </section>
 </template>
 <script setup lang="ts">
