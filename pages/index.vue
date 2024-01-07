@@ -84,23 +84,22 @@ const selectedView = ref(transactionViewOptions[1])
 const { fetchTransactions } = useTransactions()
 const { transactions, pending } = await fetchTransactions()
 
-const income = computed(
-  () => transactions.value?.filter((t) => t.type === 'Income')
-)
-const expense = computed(
-  () => transactions.value?.filter((t) => t.type === 'Expense')
-)
+const filterTransactionsByType = (type: 'Income' | 'Expense') =>
+  computed(() => transactions.value?.filter((t) => t.type === type))
+
+const calculateTotal = (filteredTransactions: Ref<Transaction[] | undefined>) =>
+  computed(
+    () => filteredTransactions.value?.reduce((sum, t) => sum + t.amount!, 0)
+  )
+
+const income = filterTransactionsByType('Income')
+const expense = filterTransactionsByType('Expense')
+
+const incomeTotal = calculateTotal(income)
+const expenseTotal = calculateTotal(expense)
 
 const incomeCount = computed(() => income.value?.length)
 const expenseCount = computed(() => expense.value?.length)
-
-const incomeTotal = computed(
-  () => income.value?.reduce((sum, transaction) => sum + transaction.amount!, 0)
-)
-const expenseTotal = computed(
-  () =>
-    expense.value?.reduce((sum, transaction) => sum + transaction.amount!, 0)
-)
 
 const refreshTransactions = async () => {
   const result = await fetchTransactions()
