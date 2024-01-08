@@ -72,22 +72,34 @@ import { types, categoriesOptions } from '~/const/constants'
 const props = defineProps<{ modelValue: boolean }>()
 const emit = defineEmits(['update:modelValue'])
 
-const formState = ref({
+const initFormState = {
   type: undefined,
   amount: 0,
   created_at: undefined,
   description: undefined,
   category: undefined,
+}
+
+const formState = ref({
+  ...initFormState,
 })
+
+const resetForm = () => {
+  formState.value = { ...formState.value, ...initFormState }
+  form.value.clear()
+}
 
 const form = ref()
 
 const save = async () => {
-  form.value.validate()
+  if (form.value.errors.length) return
 }
 
 const isModalOpen = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
+  set: (value) => {
+    if (!value) resetForm()
+    emit('update:modelValue', value)
+  },
 })
 </script>
