@@ -9,11 +9,17 @@ export const useTransactions = () => {
     return { transactions, pending }
   }
 
-  const deleteTransition = async (id: number) => {
+  const deleteTransaction = async (id: number) => {
     return await useAsyncData('transactions_delete', () => deleteData(id))
   }
 
-  return { fetchTransactions, deleteTransition }
+  const upSertTransaction = async (formState: any) => {
+    return await useAsyncData('transactions_upSert', () =>
+      upSertData(formState)
+    )
+  }
+
+  return { fetchTransactions, deleteTransaction, upSertTransaction }
 }
 
 const getData = async () => {
@@ -43,3 +49,5 @@ const deleteData = async (id: number) => {
     })
   }
 }
+
+const upSertData = async (formState: any) => {}

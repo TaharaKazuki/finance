@@ -18,7 +18,7 @@
           <USelect
             placeholder="Select the transaction type"
             :options="types"
-            v-model="formState.type"
+            v-model="formState.type as string"
           />
         </UFormGroup>
 
@@ -26,7 +26,7 @@
           <UInput
             type="number"
             placeholder="Amount"
-            v-model.number="formState.amount"
+            v-model.number="formState.amount as number"
           />
         </UFormGroup>
 
@@ -39,7 +39,7 @@
           <UInput
             type="date"
             icon="i-heroicons-calendar-days-20-solid"
-            v-model="formState.created_at"
+            v-model="formState.created_at as string"
           />
         </UFormGroup>
 
@@ -49,7 +49,10 @@
           name="description"
           class="mb-4"
         >
-          <UInput placeholder="Description" v-model="formState.description" />
+          <UInput
+            placeholder="Description"
+            v-model="formState.description as string"
+          />
         </UFormGroup>
 
         <UFormGroup
@@ -62,7 +65,7 @@
           <USelect
             placeholder="Category"
             :options="categoriesOptions"
-            v-model="formState.category"
+            v-model="formState.category as string"
           />
         </UFormGroup>
 
@@ -74,19 +77,20 @@
 <script setup lang="ts">
 import { types, categoriesOptions } from '~/const/constants'
 import { schema } from '~/util/validationSchema'
+import type { Transaction } from '~/types/transaction'
 
 const props = defineProps<{ modelValue: boolean }>()
 const emit = defineEmits(['update:modelValue'])
 
 const initFormState = {
-  type: undefined,
+  type: null,
   amount: 0,
-  created_at: undefined,
-  description: undefined,
-  category: undefined,
+  created_at: '',
+  description: null,
+  category: null,
 }
 
-const formState = ref({
+const formState = ref<Omit<Transaction, 'id'>>({
   ...initFormState,
 })
 
@@ -94,11 +98,15 @@ const resetForm = () => {
   formState.value = { ...formState.value, ...initFormState }
   form.value.clear()
 }
+const { upSertTransaction } = useTransactions()
 
 const form = ref()
+const isLoading = ref(false)
 
 const save = async () => {
   if (form.value.errors.length) return
+  isLoading.value = true
+  upSertTransaction(formState.value)
 }
 
 const isModalOpen = computed({

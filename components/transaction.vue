@@ -46,7 +46,7 @@ const iconColor = computed(() =>
   isIncome.value ? 'text-green-600' : 'text-red-600'
 )
 
-const { deleteTransition } = useTransactions()
+const { deleteTransaction } = useTransactions()
 
 const items = [
   [
@@ -60,7 +60,7 @@ const items = [
       icon: 'i-heroicons-trash-20-solid',
       click: async () => {
         isLoading.value = true
-        const { pending } = await deleteTransition(props.transaction.id)
+        const { pending } = await deleteTransaction(props.transaction.id!)
         emit('deleted')
         isLoading.value = pending.value
       },
