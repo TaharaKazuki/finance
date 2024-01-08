@@ -2,7 +2,7 @@
   <UModal v-model="isModalOpen">
     <UCard>
       <template #header> Add Transaction </template>
-      <UForm :state="formState">
+      <UForm :state="formState" ref="form" @submit.prevent="save">
         <UFormGroup
           :required="true"
           label="Transaction Type"
@@ -51,10 +51,11 @@
           label="Category"
           name="category"
           class="mb-4"
+          v-if="formState.type === 'Expense'"
         >
           <USelect
             placeholder="Category"
-            :options="categories"
+            :options="categoriesOptions"
             v-model="formState.category"
           />
         </UFormGroup>
@@ -65,8 +66,9 @@
   </UModal>
 </template>
 <script setup lang="ts">
-import { types, categories } from '~/const/constants'
+import { types, categoriesOptions } from '~/const/constants'
 import { UForm } from '../.nuxt/components'
+
 const props = defineProps<{ modelValue: boolean }>()
 const emit = defineEmits(['update:modelValue'])
 
@@ -77,6 +79,12 @@ const formState = ref({
   description: undefined,
   category: undefined,
 })
+
+const form = ref()
+
+const save = async () => {
+  form.value.validate()
+}
 
 const isModalOpen = computed({
   get: () => props.modelValue,
