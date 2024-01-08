@@ -82,6 +82,7 @@ import type { Transaction } from '~/types/transaction'
 
 const selectedView = ref(transactionViewOptions[1])
 const isOpen = ref(false)
+const dates = useSelectedTimePeriod(selectedView)
 
 const { fetchTransactions } = useTransactions()
 const { transactions, pending } = await fetchTransactions()
