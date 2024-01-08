@@ -18,7 +18,10 @@ export const useTransactions = () => {
 
 const getData = async () => {
   const supabase = useSupabaseClient<Database>()
-  const { data, error } = await supabase.from('transactions').select()
+  const { data, error } = await supabase
+    .from('transactions')
+    .select()
+    .order('created_at', { ascending: false })
   if (error) return []
   return data
 }
