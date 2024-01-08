@@ -109,6 +109,7 @@ const save = async () => {
   isLoading.value = true
   await upSertTransaction(formState.value)
   isModalOpen.value = false
+  isLoading.value = false
   emit('saved')
 }
 

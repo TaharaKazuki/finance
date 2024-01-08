@@ -55,8 +55,6 @@ const upSertData = async (formState: Omit<Transaction, 'id'>) => {
   const supabase = useSupabaseClient<Database>()
   const toast = useToast()
 
-  console.info('aaaa')
-
   try {
     const { error } = await supabase
       .from('transactions')
