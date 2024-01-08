@@ -23,7 +23,7 @@ const savingSchema = z.object({
   type: z.literal('Saving'),
 })
 
-const schema = z.intersection(
+export const schema = z.intersection(
   z.discriminatedUnion('type', [
     inComeSchema,
     expenseSchema,

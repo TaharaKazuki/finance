@@ -3,7 +3,12 @@
   <UModal v-model="isModalOpen">
     <UCard>
       <template #header> Add Transaction </template>
-      <UForm :state="formState" ref="form" @submit.prevent="save">
+      <UForm
+        :state="formState"
+        :schema="schema"
+        ref="form"
+        @submit.prevent="save"
+      >
         <UFormGroup
           :required="true"
           label="Transaction Type"
@@ -68,6 +73,7 @@
 </template>
 <script setup lang="ts">
 import { types, categoriesOptions } from '~/const/constants'
+import { schema } from '~/util/validationSchema'
 
 const props = defineProps<{ modelValue: boolean }>()
 const emit = defineEmits(['update:modelValue'])
