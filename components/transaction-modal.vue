@@ -1,4 +1,5 @@
 <template>
+  <div>Modal</div>
   <UModal v-model="isModalOpen">
     <UCard>
       <template #header> Add Transaction </template>
@@ -67,7 +68,6 @@
 </template>
 <script setup lang="ts">
 import { types, categoriesOptions } from '~/const/constants'
-import { UForm } from '../.nuxt/components'
 
 const props = defineProps<{ modelValue: boolean }>()
 const emit = defineEmits(['update:modelValue'])

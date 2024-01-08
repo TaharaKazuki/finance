@@ -46,7 +46,7 @@
       </div>
     </div>
     <div>
-      <!-- <TransactionModal v-model="isOpen" /> -->
+      <TransactionModal v-model="isOpen" />
       <UButton
         icon="i-heroicons-plus-circle"
         color="white"
