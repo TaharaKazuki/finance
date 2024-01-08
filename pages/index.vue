@@ -77,9 +77,8 @@
   </section>
 </template>
 <script setup lang="ts">
+import { transactionViewOptions } from '~/const/constants'
 import type { Transaction } from '~/types/transaction'
-
-const transactionViewOptions = ['Yearly', 'Monthly', 'Daily']
 
 const selectedView = ref(transactionViewOptions[1])
 const isOpen = ref(false)
