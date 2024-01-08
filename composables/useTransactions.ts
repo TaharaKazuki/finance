@@ -1,4 +1,5 @@
 import type { Database } from '~/types/supabase'
+import type { Transaction } from '~/types/transaction'
 
 export const useTransactions = () => {
   const fetchTransactions = async () => {
@@ -13,7 +14,7 @@ export const useTransactions = () => {
     return await useAsyncData('transactions_delete', () => deleteData(id))
   }
 
-  const upSertTransaction = async (formState: any) => {
+  const upSertTransaction = async (formState: Omit<Transaction, 'id'>) => {
     return await useAsyncData('transactions_upSert', () =>
       upSertData(formState)
     )
@@ -50,4 +51,30 @@ const deleteData = async (id: number) => {
   }
 }
 
-const upSertData = async (formState: any) => {}
+const upSertData = async (formState: Omit<Transaction, 'id'>) => {
+  const supabase = useSupabaseClient<Database>()
+  const toast = useToast()
+
+  console.info('aaaa')
+
+  try {
+    const { error } = await supabase
+      .from('transactions')
+      .upsert({ ...formState })
+    if (!error) {
+      toast.add({
+        title: 'Transaction saved',
+        icon: 'i-heroicons-check-circle',
+      })
+      return
+    }
+    throw error
+  } catch (e: any) {
+    toast.add({
+      title: 'Transaction not saved',
+      description: e.message,
+      icon: 'i-heroicons-exclamation-circle',
+      color: 'red',
+    })
+  }
+}

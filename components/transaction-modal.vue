@@ -3,12 +3,7 @@
   <UModal v-model="isModalOpen">
     <UCard>
       <template #header> Add Transaction </template>
-      <UForm
-        :state="formState"
-        :schema="schema"
-        ref="form"
-        @submit.prevent="save"
-      >
+      <UForm :state="formState" :schema="schema" ref="form" @submit="save">
         <UFormGroup
           :required="true"
           label="Transaction Type"
@@ -69,7 +64,13 @@
           />
         </UFormGroup>
 
-        <UButton type="submit" color="black" variant="solid" label="Save" />
+        <UButton
+          type="submit"
+          color="black"
+          variant="solid"
+          label="Save"
+          :loading="isLoading"
+        />
       </UForm>
     </UCard>
   </UModal>
@@ -80,7 +81,7 @@ import { schema } from '~/util/validationSchema'
 import type { Transaction } from '~/types/transaction'
 
 const props = defineProps<{ modelValue: boolean }>()
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'saved'])
 
 const initFormState = {
   type: null,
@@ -106,7 +107,9 @@ const isLoading = ref(false)
 const save = async () => {
   if (form.value.errors.length) return
   isLoading.value = true
-  upSertTransaction(formState.value)
+  await upSertTransaction(formState.value)
+  isModalOpen.value = false
+  emit('saved')
 }
 
 const isModalOpen = computed({
