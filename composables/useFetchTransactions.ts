@@ -3,7 +3,8 @@ import { INCOME, EXPENSE } from '../const/constants'
 
 export const useFetchTransactions = () => {
   const { fetchTransactions } = useTransactions()
-  const { transactions, pending } = fetchTransactions()
+  const transactions = ref<Transaction[] | null>([])
+  const pending = ref(false)
 
   const filterTransactionsByType = (type: typeof INCOME | typeof EXPENSE) =>
     computed(() => transactions.value?.filter((t) => t.type === type))
@@ -38,8 +39,10 @@ export const useFetchTransactions = () => {
   })
 
   const refresh = async () => {
-    const { transactions: refresh } = fetchTransactions()
+    pending.value = true
+    const { transactions: refresh } = await fetchTransactions()
     transactions.value = refresh.value
+    pending.value = false
   }
 
   return {

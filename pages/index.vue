@@ -91,4 +91,5 @@ const {
   refresh,
   pending,
 } = useFetchTransactions()
+await refresh()
 </script>

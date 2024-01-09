@@ -2,8 +2,8 @@ import type { Database } from '~/types/supabase'
 import type { Transaction } from '~/types/transaction'
 
 export const useTransactions = () => {
-  const fetchTransactions = () => {
-    const { data: transactions, pending } = useAsyncData(
+  const fetchTransactions = async () => {
+    const { data: transactions, pending } = await useAsyncData(
       'transactions_get',
       getData
     )

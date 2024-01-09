@@ -32,13 +32,15 @@
 </template>
 <script setup lang="ts">
 import type { Transaction } from '../types/transaction'
+import { INCOME } from '../const/constants'
+
 const props = defineProps<{ transaction: Transaction }>()
 const isLoading = ref(false)
 const emit = defineEmits(['deleted'])
 
 const { currency } = useCurrency(props.transaction!.amount!)
 
-const isIncome = computed(() => props.transaction!.type! === 'Income')
+const isIncome = computed(() => props.transaction!.type! === INCOME)
 const icon = computed(() =>
   isIncome.value ? 'i-heroicons-arrow-up-right' : 'i-heroicons-arrow-down-left'
 )
