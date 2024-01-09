@@ -46,7 +46,7 @@
       </div>
     </div>
     <div>
-      <TransactionModal v-model="isOpen" @saved="refreshTransactions()" />
+      <TransactionModal v-model="isOpen" @saved="refresh()" />
       <UButton
         icon="i-heroicons-plus-circle"
         color="white"
@@ -58,17 +58,13 @@
   </section>
 
   <section v-if="!pending">
-    <div
-      v-for="(transactionsOnDay, date) in transactionsGroupedByDate"
-      :key="date"
-      class="mb-10"
-    >
+    <div v-for="(transactionsOnDay, date) in byDate" :key="date" class="mb-10">
       <DailyTransactionSummary :date="date" :transactions="transactionsOnDay" />
       <Transaction
         v-for="transaction in transactionsOnDay"
         :key="transaction.id"
         :transaction="transaction"
-        @deleted="refreshTransactions()"
+        @deleted="refresh()"
       />
     </div>
   </section>
@@ -78,47 +74,21 @@
 </template>
 <script setup lang="ts">
 import { transactionViewOptions } from '~/const/constants'
-import type { Transaction } from '~/types/transaction'
 
 const selectedView = ref(transactionViewOptions[1])
 const isOpen = ref(false)
 const dates = useSelectedTimePeriod(selectedView)
 
-const { fetchTransactions } = useTransactions()
-const { transactions, pending } = await fetchTransactions()
-
-const filterTransactionsByType = (type: 'Income' | 'Expense') =>
-  computed(() => transactions.value?.filter((t) => t.type === type))
-
-const calculateTotal = (filteredTransactions: Ref<Transaction[] | undefined>) =>
-  computed(
-    () => filteredTransactions.value?.reduce((sum, t) => sum + t.amount!, 0)
-  )
-
-const income = filterTransactionsByType('Income')
-const expense = filterTransactionsByType('Expense')
-
-const incomeTotal = calculateTotal(income)
-const expenseTotal = calculateTotal(expense)
-
-const incomeCount = computed(() => income.value?.length)
-const expenseCount = computed(() => expense.value?.length)
-
-const refreshTransactions = async () => {
-  const result = await fetchTransactions()
-  transactions.value = result.transactions.value
-}
-
-const transactionsGroupedByDate = computed(() => {
-  const grouped: Record<string, Transaction[]> = {}
-
-  for (const transaction of transactions.value!) {
-    const date = new Date(transaction.created_at!).toISOString().split('T')[0]
-    if (!grouped[date]) {
-      grouped[date] = []
-    }
-    grouped[date].push(transaction)
-  }
-  return grouped
-})
+const {
+  transactions: {
+    incomeCount,
+    expenseCount,
+    incomeTotal,
+    expenseTotal,
+    all,
+    grouped: { byDate },
+  },
+  refresh,
+  pending,
+} = useFetchTransactions()
 </script>

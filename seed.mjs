@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import { faker } from '@faker-js/faker'
+import { EXPENSE, SAVING, INCOME, INVESTMENT } from './const/constants'
 import 'dotenv/config'
 
 const supabase = createClient(
@@ -22,7 +23,7 @@ async function seedTransactions() {
     return
   }
 
-  let transactions = []
+  const transactions = []
 
   for (
     let year = new Date().getFullYear();
@@ -40,24 +41,24 @@ async function seedTransactions() {
       const typeBias = Math.random()
 
       if (typeBias < 0.85) {
-        type = 'Expense'
+        type = EXPENSE
         category = faker.helpers.arrayElement(categories) // Category only for 'Expense'
       } else if (typeBias < 0.95) {
-        type = 'Income'
+        type = INCOME
       } else {
-        type = faker.helpers.arrayElement(['Saving', 'Investment'])
+        type = faker.helpers.arrayElement([SAVING, INVESTMENT])
       }
 
       let amount
       switch (type) {
-        case 'Income':
+        case INCOME:
           amount = faker.number.int({ min: 2000, max: 5000 })
           break
-        case 'Expense':
+        case EXPENSE:
           amount = faker.number.int({ min: 100, max: 1000 })
           break
-        case 'Saving':
-        case 'Investment':
+        case SAVING:
+        case INVESTMENT:
           amount = faker.number.int({ min: 5000, max: 10000 })
           break
         default:
@@ -69,7 +70,7 @@ async function seedTransactions() {
         amount,
         type,
         description: faker.lorem.sentence(),
-        category: type === 'Expense' ? category : null, // Category only for 'Expense'
+        category: type === EXPENSE ? category : null, // Category only for 'Expense'
       })
     }
   }
