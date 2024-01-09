@@ -40,9 +40,10 @@ export const useFetchTransactions = () => {
 
   const refresh = async () => {
     pending.value = true
-    const { transactions: refresh } = await fetchTransactions()
+    const { transactions: refresh, pending: fetchPending } =
+      await fetchTransactions()
     transactions.value = refresh.value
-    pending.value = false
+    pending.value = fetchPending.value
   }
 
   return {
