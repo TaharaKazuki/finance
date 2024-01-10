@@ -79,7 +79,6 @@ const selectedView = ref(transactionViewOptions[1])
 const isOpen = ref(false)
 const dates = useSelectedTimePeriod(selectedView)
 
-console.info('')
 const {
   transactions: {
     incomeCount,
